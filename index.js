@@ -330,7 +330,7 @@ function getPerDiemRate (args) {
        var data = JSON.parse(results);
        var mealRate = data.result.records[0].Meals;
 
-       speech = "The rate for meals is " + mealRate +  " .";
+       speech = "The rate for meals is $" + mealRate +  " .";
 
        sendSpeech();
   }
