@@ -328,6 +328,7 @@
   }
 
   function returnPerDiemRate (results) {
+      console.log('got here');
        var data = JSON.parse(results);
        var mealRate = data.result.records[0].Meals;
 
