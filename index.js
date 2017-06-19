@@ -328,18 +328,15 @@ function getPerDiemRate (args) {
 
 function returnPerDiemRate (results) {
    var data = JSON.parse(results);
-   var mealRate = data.result.records[0].Meals;
-   /*if (data.result.records[0].Meals) {
+   if (data.result.records[0].Meals) {
        var mealRate = data.result.records[0].Meals;
-   }*/
+   }
    
-   console.log('mealrate: ' + mealRate);
-   speech = "The rate for meals is $" + mealRate +  ".";
-   /*if (mealRate) {
+   if (mealRate) {
        speech = "The rate for meals is $" + mealRate +  ".";
    } else {
        speech = "I'm sorry, I'm not able to get the per diem rate for that area."
-   }*/
+   }
    
 
    sendSpeech();
