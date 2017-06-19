@@ -150,7 +150,7 @@ function lookupIntent (intentId) {
         return returnUSAJobsFollowUp;
       break;
 		    
-      case "41d6da0c-9e82-42d2-aba1-6eb4e92297a2":
+      case "58e2e463-45c6-4b9a-8925-aace6e349524":
         return getPerDiemRate;
       break;
     }
@@ -326,11 +326,20 @@ function getPerDiemRate (args) {
 
 }
 
-  function returnPerDiemRate (results) {
-       var data = JSON.parse(results);
+function returnPerDiemRate (results) {
+   var data = JSON.parse(results);
+   if (data.result.records[0].Meals) {
        var mealRate = data.result.records[0].Meals;
+   }
+   
+   console.log(mealRate);
 
+   if (mealRate) {
        speech = "The rate for meals is $" + mealRate +  ".";
+   } else {
+       speech = "I'm sorry, I'm not able to get the per diem rate for that area."
+   }
+   
 
-       sendSpeech();
-  }
+   sendSpeech();
+}
