@@ -334,13 +334,13 @@ function returnPerDiemRate (results) {
        var rec = data.result.records;
 
        //first serached on zipcode take the first meal rate
-       if (data.filters.Zip) {
-           var mealRate = data.result.records[0].Meals;
+       if (data.result.filters.Zip) {
+           var mealRate = rec[0].Meals;
        } else {  
            //cycle through the results to find standard rate
            for (var i=0; i < rec.length; i++) {
                if (rec[i].City == "Standard Rate") {
-                   var mealRate = data.result.records[i].Meals;
+                   var mealRate = rec[i].Meals;
                    break;
                }
            }
