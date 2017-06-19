@@ -328,7 +328,7 @@ function getPerDiemRate (args) {
 
 function returnPerDiemRate (results) {
    var data = JSON.parse(results);
-   
+   console.log('Zip exists: ' + args.body.result.parameters['Zip']);
    //check if there are results and find standard rate
    if (data.result.records.length > 0) {
        var rec = data.result.records;
