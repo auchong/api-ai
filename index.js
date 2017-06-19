@@ -328,14 +328,21 @@ function getPerDiemRate (args) {
 
 function returnPerDiemRate (results) {
    var data = JSON.parse(results);
-   console.log('Zip exists: ' + args.body.result.parameters['Zip']);
-   //check if there are results and find standard rate
+
+   //check if there are results
    if (data.result.records.length > 0) {
        var rec = data.result.records;
-       for (var i=0; i < rec.length; i++) {
-           if (rec[i].City == "Standard Rate") {
-               var mealRate = data.result.records[i].Meals;
-               break;
+
+       //first serached on zipcode take the first meal rate
+       if (data.filters.Zip) {
+           var mealRate = data.result.records[0].Meals;
+       } else {  
+           //cycle through the results to find standard rate
+           for (var i=0; i < rec.length; i++) {
+               if (rec[i].City == "Standard Rate") {
+                   var mealRate = data.result.records[i].Meals;
+                   break;
+               }
            }
        }
    }
