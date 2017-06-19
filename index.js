@@ -328,9 +328,16 @@ function getPerDiemRate (args) {
 
 function returnPerDiemRate (results) {
    var data = JSON.parse(results);
-   console.log(data);
+   
+   //check if there are results and find standard rate
    if (data.result.records.length > 0) {
-       var mealRate = data.result.records[0].Meals;
+       var rec = data.result.records;
+       for (var i=0; i < rec.length; i++) {
+           if (rec[i].City == "Standard Rate") {
+               var mealRate = data.result.records[i].Meals;
+               break;
+           }
+       }
    }
    
    if (mealRate) {
@@ -338,7 +345,6 @@ function returnPerDiemRate (results) {
    } else {
        speech = "I'm sorry, I'm not able to get the per diem rate for that area."
    }
-   
 
    sendSpeech();
 }
