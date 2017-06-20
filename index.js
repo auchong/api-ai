@@ -160,7 +160,17 @@ function getTSAWaitTime (args) {
 
     type = "http";
 
-    var query = "ap=" + args.body.result.parameters['geo-airport'];
+    if (!args.body.result.parameters['geo-airport'].IATA){
+        return response.status(400).json({
+            status: {
+                code: 400,
+                errorType: "test error"
+            }
+        });
+    } else {
+        var query = "ap=" + args.body.result.parameters['geo-airport'].IATA;
+    }
+
     console.log(query);
     var options = {
       host: "apps.tsa.dhs.gov",
@@ -268,10 +278,10 @@ function returnUSAJobs (results) {
 
 function returnUSAJobsFollowUp() {
   message = {
-        		  "type": 4,
-        		  "payload": {
+    		  "type": 4,
+    		  "payload": {
               }
-        		};
+        	};
   speech = 'Here is the list.';
   var cardItems = [];
 
@@ -328,10 +338,10 @@ function getPerDiemRate (args) {
 
 function returnPerDiemRate (results) {
    var data = JSON.parse(results);
-
+   var rec = data.result.records;
+   
    //check if there are results
-   if (data.result.records.length > 0) {
-       var rec = data.result.records;
+   if (rec.length > 0) {
 
        //first serached on zipcode take the first meal rate
        if (data.result.filters.Zip) {
