@@ -150,7 +150,7 @@ function lookupIntent (intentId) {
         return returnUSAJobsFollowUp;
       break;
 		    
-      case "41d6da0c-9e82-42d2-aba1-6eb4e92297a2":
+      case "58e2e463-45c6-4b9a-8925-aace6e349524":
         return getPerDiemRate;
       break;
     }
@@ -160,7 +160,17 @@ function getTSAWaitTime (args) {
 
     type = "http";
 
-    var query = "ap=" + args.body.result.parameters['geo-airport'];
+    if (!args.body.result.parameters['geo-airport'].IATA){
+        return response.status(400).json({
+            status: {
+                code: 400,
+                errorType: "test error"
+            }
+        });
+    } else {
+        var query = "ap=" + args.body.result.parameters['geo-airport'].IATA;
+    }
+
     console.log(query);
     var options = {
       host: "apps.tsa.dhs.gov",
@@ -268,10 +278,10 @@ function returnUSAJobs (results) {
 
 function returnUSAJobsFollowUp() {
   message = {
-        		  "type": 4,
-        		  "payload": {
+    		  "type": 4,
+    		  "payload": {
               }
-        		};
+        	};
   speech = 'Here is the list.';
   var cardItems = [];
 
@@ -326,11 +336,32 @@ function getPerDiemRate (args) {
 
 }
 
-  function returnPerDiemRate (results) {
-       var data = JSON.parse(results);
-       var mealRate = data.result.records[0].Meals;
+function returnPerDiemRate (results) {
+   var data = JSON.parse(results);
+   var rec = data.result.records;
+   
+   //check if there are results
+   if (rec.length > 0) {
 
+       //first serached on zipcode take the first meal rate
+       if (data.result.filters.Zip) {
+           var mealRate = rec[0].Meals;
+       } else {  
+           //cycle through the results to find standard rate
+           for (var i=0; i < rec.length; i++) {
+               if (rec[i].City == "Standard Rate") {
+                   var mealRate = rec[i].Meals;
+                   break;
+               }
+           }
+       }
+   }
+   
+   if (mealRate) {
        speech = "The rate for meals is $" + mealRate +  ".";
+   } else {
+       speech = "I'm sorry, I'm not able to get the per diem rate for that area."
+   }
 
-       sendSpeech();
-  }
+   sendSpeech();
+}
