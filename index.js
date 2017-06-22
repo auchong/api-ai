@@ -340,7 +340,7 @@ function returnPerDiemRate (results) {
    var data = JSON.parse(results);
    var rec = data.result.records;
    
-   if (data.result != "High Load") {
+   if (rec) {
 	   //check if there are results
 	   if (rec.length > 0) {
 
