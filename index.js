@@ -340,21 +340,23 @@ function returnPerDiemRate (results) {
    var data = JSON.parse(results);
    var rec = data.result.records;
    
-   //check if there are results
-   if (rec.length > 0) {
+   if (data.result != "High Load") {
+	   //check if there are results
+	   if (rec.length > 0) {
 
-       //first serached on zipcode take the first meal rate
-       if (data.result.filters.Zip) {
-           var mealRate = rec[0].Meals;
-       } else {  
-           //cycle through the results to find standard rate
-           for (var i=0; i < rec.length; i++) {
-               if (rec[i].City == "Standard Rate") {
-                   var mealRate = rec[i].Meals;
-                   break;
-               }
-           }
-       }
+	       //first serached on zipcode take the first meal rate
+	       if (data.result.filters.Zip) {
+		   var mealRate = rec[0].Meals;
+	       } else {  
+		   //cycle through the results to find standard rate
+		   for (var i=0; i < rec.length; i++) {
+		       if (rec[i].City == "Standard Rate") {
+			   var mealRate = rec[i].Meals;
+			   break;
+		       }
+		   }
+	       }
+	   }
    }
    
    if (mealRate) {
